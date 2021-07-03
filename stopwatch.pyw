@@ -21,7 +21,10 @@ except:
 ws = Tk()
 ws.geometry("400x200+1000+300")
 ws.title("Mr. Stopwatch")
-ws.resizable(0,0)
+# ws.resizable(0,0)
+
+frame = Frame(master=ws,width=400,height=200,background="#ff00ff")
+
 
 def get_times():
     """Return session and total time as tuple.
@@ -76,17 +79,17 @@ def StartTimer(label):
 
     running = True
     counter_label(label)
-    start_btn["state"] = "disabled"
-    stop_btn["state"] = "normal"
-    reset_btn["state"] = "disabled"
+    button_start["state"] = "disabled"
+    button_pause["state"] = "normal"
+    button_reset["state"] = "disabled"
 
 
 def PauseTimer():
     global running
 
-    start_btn["state"] = "normal"
-    stop_btn["state"] = "disabled"
-    reset_btn["state"] = "normal"
+    button_start["state"] = "normal"
+    button_pause["state"] = "disabled"
+    button_reset["state"] = "normal"
     running = False
 
     time.sleep(1) # Pause for 1 second to workaround faster counting if timer is restarted sooner than 1 second.
@@ -103,55 +106,58 @@ def ResetTimer(label):
 
 
 label_times = Label(
-    ws,
+    master = frame,
     text = "\n".join(get_times()),
-    fg = "black",
-    font = "Verdana 40 bold"
+    fg = "#00ff00",
+    font = "Verdana 40 bold",
+    background="#ff00ff"
     )
+label_times.place(x=110, y=0)
 
 label_string1 = Label(
-    ws,
+    master = frame,
     text = "Session",
-    fg = "black",
-    font = "Verdana 12 bold"
+    fg = "#00ff00",
+    font = "Verdana 12 bold",
+    background="#ff00ff"
     )
+label_string1.place(x=5, y=38)
 
 label_string2 = Label(
-    ws,
+    master = frame,
     text = "Total",
-    fg = "black",
-    font = "Verdana 12 bold"
+    fg = "#00ff00",
+    font = "Verdana 12 bold",
+    background="#ff00ff"
     )
-
-label_times.place(x=110, y=0)
-label_string1.place(x=5, y=38)
 label_string2.place(x=5, y=103)
 
-start_btn=Button(
-    ws,
+button_start = Button(
+    master = frame,
     text="Start",
     width=15,
     command = lambda: StartTimer(label_times)
     )
+button_start.place(x=23, y=150)
 
-stop_btn = Button(
-    ws,
+button_pause = Button(
+    master = frame,
     text = "Pause",
     width = 15,
     state = "disabled",
-    command=PauseTimer
+    command = PauseTimer
     )
+button_pause.place(x=143, y=150)
 
-reset_btn = Button(
-    ws,
+button_reset = Button(
+    master = frame,
     text = "Reset",
     width = 15,
     command = lambda: ResetTimer(label_times)
     )
+button_reset.place(x=263, y=150)
 
-start_btn.place(x=23, y=150)
-stop_btn.place(x=143, y=150)
-reset_btn.place(x=263, y=150)
+frame.pack()
 
 def on_close():
     global session_time, total_time
